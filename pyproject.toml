@@ -7,9 +7,7 @@ requires-python = ">=3.10"
 authors = [{name = "Simon Willison"}]
 license = "Apache-2.0"
 classifiers = []
-dependencies = [
-
-]
+dependencies = ["pytest"]
 
 [build-system]
 requires = ["setuptools"]
@@ -20,10 +18,6 @@ Homepage = "https://github.com/simonw/pytest-unused-port"
 Changelog = "https://github.com/simonw/pytest-unused-port/releases"
 Issues = "https://github.com/simonw/pytest-unused-port/issues"
 CI = "https://github.com/simonw/pytest-unused-port/actions"
-
-
-[project.optional-dependencies]
-test = ["pytest"]
 
 [project.entry-points.pytest11]
 unused_port = "pytest_unused_port"
