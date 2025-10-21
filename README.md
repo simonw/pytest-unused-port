@@ -113,13 +113,13 @@ def test_fetch_file(unused_port_server, tmp_path):
 
 #### Using as a context manager
 
-You can also use `UnusedPortServer` directly as a context manager if you need more control:
+You can also use `StaticServer` directly as a context manager if you need more control:
 
 ```python
-from pytest_unused_port import UnusedPortServer
+from pytest_unused_port import StaticServer
 
 def test_with_context_manager(unused_port, tmp_path):
-    with UnusedPortServer(unused_port) as server:
+    with StaticServer(unused_port) as server:
         server.start(tmp_path)
         # Server runs here
         # ... your test code ...

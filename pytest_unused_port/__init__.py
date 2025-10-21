@@ -5,9 +5,9 @@ import time
 import pytest
 
 
-class UnusedPortServer:
+class StaticServer:
     """
-    Manages an HTTP server running on an unused port.
+    Manages a static file HTTP server running on a port.
 
     Provides methods to start and stop the server, with automatic cleanup.
     """
@@ -89,7 +89,7 @@ def unused_port():
 @pytest.fixture
 def unused_port_server(unused_port):
     """
-    Returns an UnusedPortServer instance that can start an HTTP server on an unused port.
+    Returns a StaticServer instance that can start an HTTP server on an unused port.
 
     The server automatically stops at the end of the test function.
 
@@ -99,7 +99,7 @@ def unused_port_server(unused_port):
             # Test your server at unused_port_server.port
             # Server automatically stops after test
     """
-    server = UnusedPortServer(unused_port)
+    server = StaticServer(unused_port)
     yield server
     # Automatic cleanup: stop the server if it's still running
     server.stop()

@@ -132,8 +132,8 @@ def test_unused_port_server_start_returns_self(unused_port_server):
 
 
 def test_unused_port_server_context_manager():
-    """Test that UnusedPortServer works as a context manager."""
-    from pytest_unused_port import UnusedPortServer
+    """Test that StaticServer works as a context manager."""
+    from pytest_unused_port import StaticServer
     import socket
 
     # Get an unused port
@@ -143,7 +143,7 @@ def test_unused_port_server_context_manager():
     sock.close()
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        with UnusedPortServer(port) as server:
+        with StaticServer(port) as server:
             server.start(tmpdir)
             # Server should be running
             test_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
