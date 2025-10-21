@@ -1,0 +1,66 @@
+# pytest-unused-port
+
+[![PyPI](https://img.shields.io/pypi/v/pytest-unused-port.svg)](https://pypi.org/project/pytest-unused-port/)
+[![Tests](https://github.com/simonw/pytest-unused-port/actions/workflows/test.yml/badge.svg)](https://github.com/simonw/pytest-unused-port/actions/workflows/test.yml)
+[![Changelog](https://img.shields.io/github/v/release/simonw/pytest-unused-port?include_prereleases&label=changelog)](https://github.com/simonw/pytest-unused-port/releases)
+[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/simonw/pytest-unused-port/blob/main/LICENSE)
+
+pytest fixture finding an unused local port
+
+## Installation
+
+Install this library using `pip`:
+```bash
+pip install pytest-unused-port
+```
+## Usage
+
+This pytest plugin provides a `unused_port` fixture that returns an available TCP port on localhost that your tests can use.
+
+### Basic Example
+
+```python
+def test_my_server(unused_port):
+    # unused_port is an integer containing an available port number
+    server = start_my_server(port=unused_port)
+    assert server.is_running()
+```
+
+### Starting an HTTP Server
+
+```python
+import http.server
+
+def test_http_server(unused_port):
+    handler = http.server.SimpleHTTPRequestHandler
+    server = http.server.HTTPServer(('127.0.0.1', unused_port), handler)
+    # Now you can test your server on the unused port
+    assert server.server_port == unused_port
+```
+
+### Using with Socket Programming
+
+```python
+import socket
+
+def test_socket_server(unused_port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('127.0.0.1', unused_port))
+    sock.listen(1)
+    # Your test code here
+    sock.close()
+```
+
+The fixture automatically finds an available port by binding to port 0 (which tells the OS to assign any available port), getting the assigned port number, and then releasing it for your test to use.
+
+## Development
+
+To contribute to this library, first checkout the code. Then install the dependencies using `uv`:
+```bash
+cd pytest-unused-port
+uv pip install -e '.[test]'
+```
+To run the tests:
+```bash
+uv run pytest
+```

@@ -1,0 +1,29 @@
+[project]
+name = "pytest-unused-port"
+version = "0.1"
+description = "pytest fixture finding an unused local port"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Simon Willison"}]
+license = "Apache-2.0"
+classifiers = []
+dependencies = [
+
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/simonw/pytest-unused-port"
+Changelog = "https://github.com/simonw/pytest-unused-port/releases"
+Issues = "https://github.com/simonw/pytest-unused-port/issues"
+CI = "https://github.com/simonw/pytest-unused-port/actions"
+
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.entry-points.pytest11]
+unused_port = "pytest_unused_port"
