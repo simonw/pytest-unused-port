@@ -111,6 +111,21 @@ def test_fetch_file(unused_port_server, tmp_path):
     assert response.read().decode() == "test data"
 ```
 
+#### Using as a context manager
+
+You can also use `UnusedPortServer` directly as a context manager if you need more control:
+
+```python
+from pytest_unused_port import UnusedPortServer
+
+def test_with_context_manager(unused_port, tmp_path):
+    with UnusedPortServer(unused_port) as server:
+        server.start(tmp_path)
+        # Server runs here
+        # ... your test code ...
+    # Server automatically stops when exiting the context
+```
+
 The server runs `python -m http.server` in a subprocess, serving static files from the specified directory.
 
 ## Development
