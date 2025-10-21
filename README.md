@@ -5,7 +5,7 @@
 [![Changelog](https://img.shields.io/github/v/release/simonw/pytest-unused-port?include_prereleases&label=changelog)](https://github.com/simonw/pytest-unused-port/releases)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/simonw/pytest-unused-port/blob/main/LICENSE)
 
-pytest fixture finding an unused local port
+pytest fixture finding an unused local port, built [using Claude Code](https://gistpreview.github.io/?9ffa45bc69a545427009ca6283e2e672)
 
 ## Installation
 
