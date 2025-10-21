@@ -6,7 +6,9 @@ readme = "README.md"
 requires-python = ">=3.10"
 authors = [{name = "Simon Willison"}]
 license = "Apache-2.0"
-classifiers = []
+classifiers = [
+  "Framework :: Pytest"
+]
 dependencies = ["pytest"]
 
 [build-system]
