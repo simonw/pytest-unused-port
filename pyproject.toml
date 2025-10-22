@@ -23,3 +23,6 @@ CI = "https://github.com/simonw/pytest-unused-port/actions"
 
 [project.entry-points.pytest11]
 unused_port = "pytest_unused_port"
+
+[project.scripts]
+pytest-unused-port = "pytest_unused_port.__main__:main"

@@ -5,6 +5,23 @@ import time
 import pytest
 
 
+def find_unused_port():
+    """
+    Find and return an unused port number on localhost.
+
+    This function finds an available port by binding to port 0
+    (which tells the OS to assign any available port), getting
+    the assigned port number, and then closing the socket.
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        sock.bind(('127.0.0.1', 0))
+        port = sock.getsockname()[1]
+        return port
+    finally:
+        sock.close()
+
+
 class StaticServer:
     """
     Manages a static file HTTP server running on a port.
@@ -77,13 +94,7 @@ def unused_port():
     (which tells the OS to assign any available port), getting
     the assigned port number, and then closing the socket.
     """
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        sock.bind(('127.0.0.1', 0))
-        port = sock.getsockname()[1]
-        return port
-    finally:
-        sock.close()
+    return find_unused_port()
 
 
 @pytest.fixture

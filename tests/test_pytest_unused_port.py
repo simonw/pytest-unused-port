@@ -3,6 +3,9 @@ import http.server
 import threading
 import tempfile
 import os
+import subprocess
+import sys
+import time
 from pathlib import Path
 try:
     from urllib.request import urlopen
@@ -158,3 +161,90 @@ def test_unused_port_server_context_manager():
         result = test_sock.connect_ex(('127.0.0.1', port))
         test_sock.close()
         assert result != 0, "Server should be stopped after context exit"
+
+
+def test_cli_serves_directory():
+    """Test that the CLI can serve a directory."""
+    with tempfile.TemporaryDirectory() as tmpdir:
+        # Create a test file in the directory
+        test_file = Path(tmpdir) / 'test.txt'
+        test_content = 'Hello from CLI test!'
+        test_file.write_text(test_content)
+
+        # Start the CLI process with unbuffered output
+        process = subprocess.Popen(
+            [sys.executable, '-u', '-m', 'pytest_unused_port', tmpdir],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            bufsize=1  # Line buffered
+        )
+
+        port = None
+        try:
+            # Read the output to get the port number
+            # The CLI prints: "Serving {directory} on http://127.0.0.1:{port}"
+            import re
+            for _ in range(10):  # Try reading up to 10 times
+                line = process.stdout.readline()
+                if 'Serving' in line and 'http://127.0.0.1:' in line:
+                    # Extract port from "Serving {dir} on http://127.0.0.1:{port}"
+                    match = re.search(r'http://127\.0\.0\.1:(\d+)', line)
+                    if match:
+                        port = int(match.group(1))
+                        break
+                if process.poll() is not None:
+                    # Process ended unexpectedly
+                    stderr = process.stderr.read()
+                    raise RuntimeError(f"CLI process ended unexpectedly: {stderr}")
+
+            assert port is not None, "Failed to extract port from CLI output"
+
+            # Give the server a moment to start
+            time.sleep(0.3)
+
+            # Fetch the test file
+            url = f'http://127.0.0.1:{port}/test.txt'
+            response = urlopen(url)
+            fetched_content = response.read().decode('utf-8')
+
+            assert fetched_content == test_content
+
+        finally:
+            # Stop the server
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait()
+
+
+def test_cli_serves_current_directory_by_default():
+    """Test that the CLI serves the current directory when no argument is provided."""
+    # We'll test this by checking that the CLI accepts no arguments
+    # and doesn't immediately crash
+    process = subprocess.Popen(
+        [sys.executable, '-u', '-m', 'pytest_unused_port'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1  # Line buffered
+    )
+
+    try:
+        # Check that we got the expected output
+        output = process.stdout.readline()
+        assert 'Serving' in output and 'http://127.0.0.1:' in output
+
+        # Check that the process is still running (didn't crash)
+        assert process.poll() is None, "CLI process should still be running"
+
+    finally:
+        # Stop the server
+        process.terminate()
+        try:
+            process.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            process.kill()
+            process.wait()
