@@ -13,6 +13,14 @@ Install this library using `pip`:
 ```bash
 pip install pytest-unused-port
 ```
+Or with `uv`:
+```bash
+uv add pytest-unused-port
+```
+Or as a tool (to get the `uport` command):
+```bash
+uv tool install pytest-unused-port
+```
 ## Usage
 
 ### Command-line Interface
