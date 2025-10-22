@@ -23,6 +23,9 @@ You can use pytest-unused-port as a standalone tool to serve a directory on an u
 # Serve a specific directory
 pytest-unused-port /tmp/blah
 
+# Or use the shorter alias
+uport /tmp/blah
+
 # Or using uvx
 uvx pytest-unused-port /tmp/blah
 
@@ -31,6 +34,7 @@ python -m pytest_unused_port /tmp/blah
 
 # Serve the current directory (default)
 pytest-unused-port
+uport
 ```
 
 This will start Python's `http.server` serving the specified directory on an automatically-selected unused port. The server will print the URL and run until you press Ctrl+C.
