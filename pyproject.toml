@@ -1,6 +1,6 @@
 [project]
 name = "pytest-unused-port"
-version = "0.1"
+version = "0.2"
 description = "pytest fixture finding an unused local port"
 readme = "README.md"
 requires-python = ">=3.10"
