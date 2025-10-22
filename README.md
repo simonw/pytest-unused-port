@@ -15,6 +15,32 @@ pip install pytest-unused-port
 ```
 ## Usage
 
+### Command-line Interface
+
+You can use pytest-unused-port as a standalone tool to serve a directory on an unused port:
+
+```bash
+# Serve a specific directory
+pytest-unused-port /tmp/blah
+
+# Or use the shorter alias
+uport /tmp/blah
+
+# Or using uvx
+uvx pytest-unused-port /tmp/blah
+
+# Or as a Python module
+python -m pytest_unused_port /tmp/blah
+
+# Serve the current directory (default)
+pytest-unused-port
+uport
+```
+
+This will start Python's `http.server` serving the specified directory on an automatically-selected unused port. The server will print the URL and run until you press Ctrl+C.
+
+### Pytest Fixtures
+
 This pytest plugin provides a `unused_port` fixture that returns an available TCP port on localhost that your tests can use.
 
 ### Basic Example
